@@ -80,6 +80,42 @@ const run = async () => {
                 res.send({ status: false, message: "Not Deleted!" });
             }
         });
+
+        // post a review
+        app.post("/review/:id", async (req, res) => {
+            const bookId = req.params.id;
+            const review = req.body.review;
+
+            const result = await bookCollection.updateOne(
+                { _id: new ObjectId(productId) },
+                { $push: { reviews: review } }
+            );
+
+            if (result.modifiedCount !== 1) {
+                res.send({
+                    status: false,
+                    message: "Book not found or review not added",
+                });
+                return;
+            }
+            res.send({ status: true, message: "Comment added successfully" });
+        });
+
+        // get review
+        app.get("/review/:id", async (req, res) => {
+            const bookId = req.params.id;
+
+            const result = await bookCollection.findOne(
+                { _id: new ObjectId(bookId) },
+                { projection: { _id: 0, reviews: 1 } }
+            );
+
+            if (result) {
+                res.send({ status: true, data: result });
+            } else {
+                res.send({ status: false, message: "Product not found" });
+            }
+        });
     } finally {
     }
 };
