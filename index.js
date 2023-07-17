@@ -31,6 +31,11 @@ const run = async () => {
 
             res.send({ status: true, data: books });
         });
+        // post a book
+        app.post("/book", async (req, res) => {
+            const result = await bookCollection.insertOne(req.body);
+            res.send(result);
+        });
     } finally {
     }
 };
