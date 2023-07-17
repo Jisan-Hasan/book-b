@@ -36,6 +36,15 @@ const run = async () => {
             const result = await bookCollection.insertOne(req.body);
             res.send(result);
         });
+
+        // get book details
+        app.get("/book/:id", async (req, res) => {
+            const id = req.params.id;
+            const book = await bookCollection.findOne({
+                _id: new ObjectId(id),
+            });
+            res.send({ status: true, data: book });
+        });
     } finally {
     }
 };
