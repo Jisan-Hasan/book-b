@@ -45,6 +45,23 @@ const run = async () => {
             });
             res.send({ status: true, data: book });
         });
+
+        // update book
+        app.patch("/book/:id", async (req, res) => {
+            const id = req.params.id;
+            const updatedData = req.body;
+
+            const result = await bookCollection.updateOne(
+                { _id: new ObjectId(id) },
+                { $set: updatedData }
+            );
+            if (result.modifiedCount === 1) {
+                res.send({
+                    status: true,
+                    message: "Book updated successfully!",
+                });
+            }
+        });
     } finally {
     }
 };
