@@ -24,7 +24,13 @@ const run = async () => {
         const db = client.db("book-catalog");
         const bookCollection = db.collection("book");
 
-        
+        // get all the books
+        app.get("/books", async (req, res) => {
+            const cursor = bookCollection.find({});
+            const books = await cursor.toArray();
+
+            res.send({ status: true, data: books });
+        });
     } finally {
     }
 };
