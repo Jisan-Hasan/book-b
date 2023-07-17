@@ -87,7 +87,7 @@ const run = async () => {
             const review = req.body.review;
 
             const result = await bookCollection.updateOne(
-                { _id: new ObjectId(productId) },
+                { _id: new ObjectId(bookId) },
                 { $push: { reviews: review } }
             );
 
