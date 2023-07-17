@@ -60,6 +60,24 @@ const run = async () => {
                     status: true,
                     message: "Book updated successfully!",
                 });
+            } else {
+                res.send({ status: false, message: "Not updated" });
+            }
+        });
+
+        // delete book
+        app.delete("/book/:id", async (req, res) => {
+            const id = req.params.id;
+            const result = await bookCollection.deleteOne({
+                _id: new ObjectId(id),
+            });
+            if (result.deletedCount === 1) {
+                res.send({
+                    status: true,
+                    message: "Book deleted successfully",
+                });
+            } else {
+                res.send({ status: false, message: "Not Deleted!" });
             }
         });
     } finally {
