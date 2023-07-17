@@ -33,6 +33,7 @@ const run = async () => {
         });
         // post a book
         app.post("/book", async (req, res) => {
+            console.log(req.body);
             const result = await bookCollection.insertOne(req.body);
             res.send(result);
         });
@@ -115,6 +116,27 @@ const run = async () => {
             } else {
                 res.send({ status: false, message: "Product not found" });
             }
+        });
+
+        // get all genres
+        app.get("/genres", async (req, res) => {
+            const result = await bookCollection.distinct("genre");
+            res.send(result);
+        });
+        // get all genres
+        app.get("/year", async (req, res) => {
+            const result = await bookCollection.distinct("publicationDate");
+            res.send(result);
+        });
+        // get last 10 added sorted book
+        app.get("/sortedBook", async (req, res) => {
+            const sortedBooks = await bookCollection
+                .find({})
+                .sort({ createdAt: -1 })
+                .limit(10)
+                .toArray();
+
+            res.send({ status: true, data: sortedBooks });
         });
     } finally {
     }
